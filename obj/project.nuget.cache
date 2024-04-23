@@ -1,0 +1,16 @@
+{
+  "version": 2,
+  "dgSpecHash": "PBy5irFP3VK/ATE+RkbsI51KGVOuF36X0hYFcxax+SahcgynfYc1aw3Zt1QPpkD41iOahqvfbav7JG39UHGJuw==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\vojti\\Desktop\\Coding\\C#\\DBInter\\DBInter.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\vojti\\.nuget\\packages\\microsoft.data.sqlite\\8.0.3\\microsoft.data.sqlite.8.0.3.nupkg.sha512",
+    "C:\\Users\\vojti\\.nuget\\packages\\microsoft.data.sqlite.core\\8.0.3\\microsoft.data.sqlite.core.8.0.3.nupkg.sha512",
+    "C:\\Users\\vojti\\.nuget\\packages\\sqlitepclraw.bundle_e_sqlite3\\2.1.6\\sqlitepclraw.bundle_e_sqlite3.2.1.6.nupkg.sha512",
+    "C:\\Users\\vojti\\.nuget\\packages\\sqlitepclraw.core\\2.1.6\\sqlitepclraw.core.2.1.6.nupkg.sha512",
+    "C:\\Users\\vojti\\.nuget\\packages\\sqlitepclraw.lib.e_sqlite3\\2.1.8\\sqlitepclraw.lib.e_sqlite3.2.1.8.nupkg.sha512",
+    "C:\\Users\\vojti\\.nuget\\packages\\sqlitepclraw.provider.e_sqlite3\\2.1.6\\sqlitepclraw.provider.e_sqlite3.2.1.6.nupkg.sha512",
+    "C:\\Users\\vojti\\.nuget\\packages\\system.memory\\4.5.3\\system.memory.4.5.3.nupkg.sha512"
+  ],
+  "logs": []
+}
