@@ -164,3 +164,4 @@ C:\Users\vojti\Desktop\Coding\C#\DBInter 1\DBInter\obj\x86\Debug\net6.0\DBInter.
 C:\Users\vojti\Desktop\Coding\C#\DBInter 1\DBInter\obj\x86\Debug\net6.0\DBInter.genruntimeconfig.cache
 C:\Users\vojti\Desktop\Coding\C#\DBInter 1\DBInter\obj\x86\Debug\net6.0\ref\DBInter.dll
 C:\Users\vojti\Desktop\Coding\C#\DBInter\obj\x86\Debug\net6.0\DBInter.csproj.Up2Date
+C:\Users\vojti\Desktop\Coding\C#\DBInter\obj\x86\Debug\net6.0\DBInter.sourcelink.json

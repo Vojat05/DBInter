@@ -10,18 +10,18 @@
         static void printHelp()
         {
             Console.WriteLine(@"Command help:
--> connect [db file]                                    | connect Test.db
--> clear   [db table]                                   | clear data
--> create  [db table (column data column data)]         | create data (id INTEGER PRIMARY KEY, name TEXT, price INTEGER)
--> write   [db table (column, column) (value, value)]   | write data (name, price) ('graphics card', 2500)
--> delete  [db table condition]                         | delete data id = 2
--> raw     [command]                                    | raw (DELETE FROM data WHERE id=1;)
--> print   [db table selector]                          | print data *
--> print columns [db table]                             | print columns data
+-> connect [db file]                                   | connect Test.db
+-> clear   [db table]                                  | clear data
+-> create  [db table (column data column data)]        | create data (id INTEGER PRIMARY KEY, name TEXT, price INTEGER)
+-> write   [db table (column, column) (value, value)]  | write data (name, price) ('graphics card', 2500)
+-> delete  [db table condition]                        | delete data id = 2
+-> raw     [command]                                   | raw (DELETE FROM data WHERE id=1;)
+-> print   [db table selector]                         | print data *
+-> print columns [db table]                            | print columns data
 -> print tables
 -> help
 -> ls
--> cd      [db table]                                   | cd data
+-> cd      [db table]                                  | cd data
 -> exit or quit");
         }
         static void Main(string[] args)
