@@ -3,7 +3,7 @@
     internal class Program
     {
         private static string? PATH;
-        private static string? DATABASE;
+        private static string? DATABASE = "";
         private static string? TABLE;
 
         // Printing command help
@@ -77,13 +77,23 @@ ____________  ___  ___
             switch (command[0])
             {
                 case "connect":
-                    Console.WriteLine($"Connecting to database {command[1]}!");
+                    int i = command[1].Length - 1;
+                    while (i > 0)
+                    {
+                        // Try to get only the database name, not the entire path specified
+                        if (command[1][i] != '/')
+                        {
+                            // Still in the database name portion
+                            DATABASE = command[1][i--] + DATABASE;
+                        }
+                        else break;
+                    }
+                    Console.WriteLine($"Connecting to database {DATABASE}!");
                     dbManager.createConnection(command[1]);
                     dbManager.openConnection();
                     dbManager.fillTableNames();
-                    DATABASE = command[1];
-                    Console.WriteLine($"Connection to {command[1]} open!");
-                    PATH += command[1];
+                    Console.WriteLine($"Connection to {DATABASE} open!");
+                    PATH += DATABASE;
                     goto START;
 
                 case "cd":

@@ -133,9 +133,9 @@ namespace DBInter
             while (reader.Read())
             {
                 string[] values = new string[columns];
-                
-                for (int i=0; i<columns; i++)
-                    values[i] = reader.GetString(i);
+
+                for (int i = 0; i < columns; i++)
+                    values[i] = reader.IsDBNull(i) ? "" : reader.GetString(i);
 
                 data.Add(values);
             }
