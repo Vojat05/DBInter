@@ -67,7 +67,7 @@ namespace DBInter
             }
         }
 
-        public SqliteCommand getCommand() { return command; }
+        public SqliteCommand? getCommand() { return command; }
 
         public void clearCommandParameters()
         {
@@ -83,13 +83,14 @@ namespace DBInter
 
         public void exec(string data)
         {
+            if (command == null) throw new Exception("Database command wasn't established.");
             setCommand(data);
             command.ExecuteNonQuery();
         }
 
         public void createTable(string table, string fields)
         {
-            for (int i=0, index = 0; i<fields.Length; i++)
+            for (int i=0; i<fields.Length; i++)
             {
                 if (fields[i] == ',') columns++;
                 if (fields[i] == ')') break;
@@ -97,26 +98,31 @@ namespace DBInter
             columns++;
 
             exec($"CREATE TABLE IF NOT EXISTS {table} {fields};");
+            if (!tableNames.Contains(table)) tableNames.Add(table);
+        }
+
+        public void dropTable(string table)
+        {
+            exec($"DROP TABLE {table};");
         }
 
         public void write(string table, string fields, string values)
         {
-            // Getting the tale column names
-            columnNames.Add("id"); // TODO: Rewrite this to get it from creating the table
-            string columnName = "";
-            for (int i=0; i<fields.Length; i++)
-            {
-                if (fields[i] == '(') continue;
-                if (fields[i] == ',' || fields[i] == ')')
-                {
-                    columnNames.Add(columnName);
-                    columnName = "";
-                }
-                else columnName += fields[i];
-            }
+            if (command == null) throw new Exception("Database command wasn't established.");
 
-            setCommand($"INSERT OR REPLACE INTO {table} {fields} VALUES {values};");
-            exec();
+            // Getting the table column names
+            setCommand($"SELECT * FROM {table}");
+            SqliteDataReader reader = command.ExecuteReader();
+            columnNames.Clear();
+            columns = reader.FieldCount;
+
+            for (int i = 0; i < columns; i++)
+                columnNames.Add(reader.GetName(i));
+            
+            reader.Close();
+            
+            // Writing into the database
+            exec($"INSERT OR REPLACE INTO {table} {fields} VALUES {values};");
         }
 
         public List<string[]> readList(string table, string selector)
@@ -127,6 +133,7 @@ namespace DBInter
             setCommand($"SELECT {selector} FROM {table};");
             SqliteDataReader reader = command.ExecuteReader();
             columns = reader.FieldCount;
+            columnNames.Clear();
             for (int i = 0; i < columns; i++)
                 columnNames.Add(reader.GetName(i));
 
@@ -152,6 +159,7 @@ namespace DBInter
             List<string[]> data = new List<string[]>();
             SqliteDataReader reader = command.ExecuteReader();
             columns = reader.FieldCount;
+            columnNames.Clear();
             for (int i = 0; i < columns; i++)
                 columnNames.Add(reader.GetName(i));
 

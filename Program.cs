@@ -15,6 +15,7 @@
 -> create  [db table (column data column data)]        | create data (id INTEGER PRIMARY KEY, name TEXT, price INTEGER)
 -> write   [db table (column, column) (value, value)]  | write data (name, price) ('graphics card', 2500)
 -> delete  [db table condition]                        | delete data id = 2
+-> remove  [db table]                                  | remove data
 -> raw     [command]                                   | raw (DELETE FROM data WHERE id=1;)
 -> print   [db table selector]                         | print data *
 -> print columns [db table]                            | print columns data
@@ -138,21 +139,22 @@ ____________  ___  ___
                 case "write":
                     try
                     {
-                        if (TABLE != null)
+                        if (TABLE != null && command.Count < 4)
                         {
                             Console.WriteLine($"Writing into table {TABLE}!");
-                            dbManager.write(TABLE, command[2], command[3]);
+                            dbManager.write(TABLE, command[1], command[2]);
                             Console.WriteLine($"Writing into table {TABLE} complete!");
-                        } else
+                        }
+                        else
                         {
                             Console.WriteLine($"Writing into table {command[1]}!");
                             dbManager.write(command[1], command[2], command[3]);
                             Console.WriteLine($"Writing into {command[1]} complete!");
                         }
-                    } catch (Exception)
+                    } catch (Exception e)
                     {
                         Console.ForegroundColor = ConsoleColor.Red;
-                        Console.WriteLine("Error has occured during writing!");
+                        Console.WriteLine(e.Message);
                         Console.ResetColor();
                     }
                     goto START;
@@ -191,6 +193,24 @@ ____________  ___  ___
                     }
                     dbManager.delete(command[1], command[2]);
                     Console.WriteLine("Database entry deleted!");
+                    goto START;
+
+                case "remove":
+                    if (command.Count < 2)
+                    {
+                        Console.WriteLine("Not enough arguments, you must specify database table to be dropped!");
+                        goto START;
+                    }
+                    try
+                    {
+                        dbManager.dropTable(command[1]);
+                        Console.WriteLine($"Database table {command[1]} removed!");
+                    } catch (Exception e)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine(e.Message);
+                        Console.ResetColor();
+                    }
                     goto START;
 
                 case "raw":
