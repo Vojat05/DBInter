@@ -78,7 +78,7 @@ ____________  ___  ___
             {
                 case "connect":
                     int i = command[1].Length - 1;
-                    while (i > 0)
+                    while (i >= 0)
                     {
                         // Try to get only the database name, not the entire path specified
                         if (command[1][i] != '/')
