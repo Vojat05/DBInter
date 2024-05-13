@@ -10,6 +10,7 @@
         static void printHelp()
         {
             Console.WriteLine(@"Command help:
+Command     Arguments                                   Example
 -> connect [db file]                                   | connect Test.db
 -> clear   [db table]                                  | clear data
 -> create  [db table (column data column data)]        | create data (id INTEGER PRIMARY KEY, name TEXT, price INTEGER)
@@ -41,7 +42,6 @@ ____________  ___  ___
             Console.WriteLine();
 
             DBManager dbManager = new DBManager();
-
 
         START:
             Console.Write($"{PATH}{(PATH == null || PATH.Length == 0 ? null : ' ')}> ");
@@ -94,7 +94,7 @@ ____________  ___  ___
                     dbManager.openConnection();
                     dbManager.fillTableNames();
                     Console.WriteLine($"Connection to {DATABASE} open!");
-                    PATH += DATABASE;
+                    PATH = DATABASE;
                     goto START;
 
                 case "cd":
@@ -119,14 +119,19 @@ ____________  ___  ___
                     goto START;
 
                 case "clear":
-                    if (TABLE != null)
+                    if (TABLE == null && command.Count > 1)
+                    {
+                        dbManager.clear(command[1]);
+                        Console.WriteLine($"Database table {command[1]} cleared!");
+                    } else if (command.Count > 1)
                     {
                         dbManager.clear(TABLE);
                         Console.WriteLine($"Database table {TABLE} cleared!");
                     } else
                     {
-                        dbManager.clear(command[1]);
-                        Console.WriteLine($"Database table {command[1]} cleared!");
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("Command clear requires at least one argument!");
+                        Console.ResetColor();
                     }
                     goto START;
 
