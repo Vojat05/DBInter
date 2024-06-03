@@ -4,11 +4,11 @@ namespace DBInter
 {
     public class DBManager
     {
-        private static SqliteConnection? connection;
-        private static SqliteCommand? command;
-        private static int columns = 0;
-        public static List<string> columnNames = new List<string>();
-        public static List<string> tableNames = new List<string>();
+        private SqliteConnection? connection;
+        private SqliteCommand? command;
+        private int columns = 0;
+        public List<string> columnNames = new List<string>();
+        public List<string> tableNames = new List<string>();
 
         public DBManager() { }
 
@@ -202,6 +202,17 @@ namespace DBInter
             for (int i = 0; i < columns; i++)
                 sum += widths[i];
 
+            int[] widthsP = new int[columns - 1];
+            for (int i = 0; i < columns - 1; i++)
+            {
+                int intermediateSum = 0;
+                for (int j = 0; j <= i; j++)
+                {
+                    intermediateSum += widths[j];
+                }
+                widthsP[i] = intermediateSum + i * 3;
+            }
+
             // Write the column names
             Console.Write("\n|");
             for (int i=0; i<columns; i++)
@@ -209,8 +220,15 @@ namespace DBInter
             Console.Write("\n");
 
             Console.Write("|");
-            for (int i = 0; i < sum; i++)
-                Console.Write('-');
+            for (int i = 0, indexer = 0; i < sum; i++)
+            {
+                if (i == widthsP[indexer] + 2)
+                {
+                    Console.Write('+');
+                    indexer += indexer < widthsP.Length - 1 ? 1 : 0;
+                }
+                else Console.Write('-');
+            }
             Console.Write("|");
 
             Console.Write('\n');
@@ -223,8 +241,15 @@ namespace DBInter
             }
 
             Console.Write("|");
-            for (int i = 0; i < sum; i++)
-                Console.Write('-');
+            for (int i = 0, indexer = 0; i < sum; i++)
+            {
+                if (i == widthsP[indexer] + 2)
+                {
+                    Console.Write('+');
+                    indexer += indexer < widthsP.Length - 1 ? 1 : 0;
+                }
+                else Console.Write('-');
+            }
             Console.Write("|\n\n");
         }
 

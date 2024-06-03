@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("DBInter")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1f7c2cb8f17fbd5c4381f94b7ed9c6c3c784f108")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+32f5319f54a5a8c1d26214fe043955bb062a7407")]
 [assembly: System.Reflection.AssemblyProductAttribute("DBInter")]
 [assembly: System.Reflection.AssemblyTitleAttribute("DBInter")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
