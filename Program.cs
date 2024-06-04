@@ -5,6 +5,7 @@
         private static string? PATH;
         private static string? DATABASE;
         private static string? TABLE;
+        private static DBManager dbManager;
 
         // Printing command help
         static void printHelp()
@@ -50,7 +51,13 @@ ____________  ___  ___
             Console.WriteLine("Type \"help\" to show possible commands");
             Console.WriteLine();
 
-            DBManager dbManager = new DBManager();
+            if (args.Length == 0) dbManager = new DBManager();
+            else 
+            {
+                dbManager = new DBManager(args[0]);
+                DATABASE = args[0];
+                PATH = args[0];
+            }
 
         START:
             Console.Write($"{PATH}{(PATH == null || PATH.Length == 0 ? null : ' ')}> ");
