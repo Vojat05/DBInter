@@ -202,6 +202,7 @@ namespace DBInter
             for (int i = 0; i < columns; i++)
                 sum += widths[i];
 
+            // For the "+" in the table printout
             int[] widthsP = new int[columns - 1];
             for (int i = 0; i < columns - 1; i++)
             {
@@ -222,7 +223,7 @@ namespace DBInter
             Console.Write("|");
             for (int i = 0, indexer = 0; i < sum; i++)
             {
-                if (i == widthsP[indexer] + 2)
+                if (columns > 1 && i == widthsP[indexer] + 2)
                 {
                     Console.Write('+');
                     indexer += indexer < widthsP.Length - 1 ? 1 : 0;
@@ -243,7 +244,7 @@ namespace DBInter
             Console.Write("|");
             for (int i = 0, indexer = 0; i < sum; i++)
             {
-                if (i == widthsP[indexer] + 2)
+                if (columns > 1 && i == widthsP[indexer] + 2)
                 {
                     Console.Write('+');
                     indexer += indexer < widthsP.Length - 1 ? 1 : 0;

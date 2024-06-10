@@ -10,7 +10,9 @@
         // Printing command help
         static void printHelp()
         {
-            Console.WriteLine(@"Command help:
+            Console.WriteLine(@"
+-------------------------------------------------------|  Command help  |-------------------------------------------------------
+
 Command             Arguments                                   Example
 --------------------------------------------------------------------------------------------------------------------------------
 -> connect          [db file]                                   | connect Test.db
