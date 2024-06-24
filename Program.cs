@@ -13,21 +13,22 @@
             Console.WriteLine(@"
 -------------------------------------------------------|  Command help  |-------------------------------------------------------
 
-Command             Arguments                                   Example
+Command                 Arguments                                   Example
 --------------------------------------------------------------------------------------------------------------------------------
--> connect          [db file]                                   | connect Test.db
--> clear | clr      [db table]                                  | clear data
--> create           [db table (column data column data)]        | create data (id INTEGER PRIMARY KEY, name TEXT, price INTEGER)
--> write            [db table (column, column) (value, value)]  | write data (name, price) ('graphics card', 2500)
--> delete           [db table condition]                        | delete data id = 2
--> remove           [db table]                                  | remove data
--> raw              [command]                                   | raw (DELETE FROM data WHERE id=1;)
--> print            [selector dbTable]                          | print * data
--> print columns    [db table]                                  | print columns data
--> cd               [db table]                                  | cd data
+-> connect              [db file]                                   | connect Test.db
+-> clear | clr | cls    [db table]                                  | clear data
+-> create               [db table (column data column data)]        | create data (id INTEGER PRIMARY KEY, name TEXT, price INTEGER)
+-> write                [db table (column, column) (value, value)]  | write data (name, price) ('graphics card', 2500)
+-> delete               [db table condition]                        | delete data id=2
+-> remove               [db table]                                  | remove data
+-> raw                  [command]                                   | raw (DELETE FROM data WHERE id=1;)
+-> print                [selector dbTable]                          | print * data
+-> print columns        [db table]                                  | print columns data
+-> cd                   [db table]                                  | cd data
 -> print tables
 -> help
 -> ls
+-> cwd
 -> exit or quit");
         }
 
@@ -37,6 +38,7 @@ Command             Arguments                                   Example
             Console.WriteLine(message);
             Console.ResetColor();
         }
+
         static void Main(string[] args)
         {
             Console.SetWindowSize(150, 40);
@@ -138,8 +140,15 @@ ____________  ___  ___
                     else dbManager.printSelection(dbManager.readList(TABLE, "*"));
                     goto START;
 
+                // Prints the current working directory in operating system;
+                case "cwd":
+                    Console.WriteLine(Directory.GetCurrentDirectory());
+                    goto START;
+
                 // Clear the database table or screen
-                case "clear": case "clr":
+                case "clear":
+                case "clr":
+                case "cls":
                     if (TABLE == null && command.Count > 1)
                     {
                         dbManager.clear(command[1]);
