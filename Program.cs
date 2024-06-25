@@ -13,18 +13,18 @@
             Console.WriteLine(@"
 -------------------------------------------------------|  Command help  |-------------------------------------------------------
 
-Command                 Arguments                                   Example
+Command                 Arguments                                     Example
 --------------------------------------------------------------------------------------------------------------------------------
--> connect              [db file]                                   | connect Test.db
--> clear | clr | cls    [db table]                                  | clear data
--> create               [db table (column data column data)]        | create data (id INTEGER PRIMARY KEY, name TEXT, price INTEGER)
--> write                [db table (column, column) (value, value)]  | write data (name, price) ('graphics card', 2500)
--> delete               [db table condition]                        | delete data id=2
--> remove               [db table]                                  | remove data
--> raw                  [command]                                   | raw (DELETE FROM data WHERE id=1;)
--> print                [selector dbTable]                          | print * data
--> print columns        [db table]                                  | print columns data
--> cd                   [db table]                                  | cd data
+-> connect              | [db file]                                   | connect Test.db
+-> clear | clr | cls    | [db table]                                  | clear data
+-> create               | [db table (column data column data)]        | create data (id INTEGER PRIMARY KEY, name TEXT, price INTEGER)
+-> write                | [db table (column, column) (value, value)]  | write data (name, price) ('graphics card', 2500)
+-> delete               | [db table condition]                        | delete data id=2
+-> remove               | [db table]                                  | remove data
+-> raw                  | [command]                                   | raw (DELETE FROM data WHERE id=1;)
+-> print                | [selector dbTable]                          | print * data
+-> print columns        | [db table]                                  | print columns data
+-> cd                   | [db table]                                  | cd data
 -> print tables
 -> help
 -> ls
@@ -37,6 +37,23 @@ Command                 Arguments                                   Example
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine(message);
             Console.ResetColor();
+        }
+
+        static int count(string message, char c)
+        {
+            int count = 0;
+
+            for (int i = 0; i < message.Length; i++)
+                if (message[i] == c) count++;
+
+            return count;
+        }
+
+        static bool isNumber(string message)
+        {
+            for (int i = 0; i < message.Length; i++)
+                if (message[i] < 48 || message[i] > 57) return false;
+            return true;
         }
 
         static void Main(string[] args)
@@ -72,13 +89,15 @@ ____________  ___  ___
             List<string> command = new List<string>();
             string com = "";
             bool inArg = false;
+            bool inString = false;
 
             // Parse the input string to get the command and it's arguments
             for (int i=0; i<input.Length; i++)
             {
                 if (input[i] == '(') inArg = true;
                 else if (input[i] == ')') inArg = false;
-                if (input[i] == ' ' && !inArg)
+                else if (input[i] == '\'') inString = inString ? false : true;
+                if (input[i] == ' ' && !inArg && !inString)
                 {
                     command.Add(com);
                     com = "";
@@ -186,6 +205,63 @@ ____________  ___  ___
                             Console.WriteLine($"Writing into table {command[1]}!");
                             dbManager.write(command[1], command[2], command[3]);
                             Console.WriteLine($"Writing into {command[1]} complete!");
+                        } else if (TABLE != null && command.Count == 2)
+                        {
+                            while (true)
+                            {
+                                string[] columns = new string[count(command[1], ',') + 1];
+                                string[] values = new string[count(command[1], ',') + 1];
+
+                                // Fill the columns array with column names
+                                string column = "";
+                                int indexer = 0;
+                                for (i = 0; i < command[1].Length; i++)
+                                {
+                                    switch (command[1][i])
+                                    {
+                                        case '(':
+                                        case '"':
+                                        case '\'': break;
+
+                                        case ')':
+                                        case ',':
+                                            columns[indexer++] = column;
+                                            column = "";
+                                            break;
+
+                                        default: 
+                                            column += command[1][i];
+                                            break;
+                                    }
+                                }
+                                Console.WriteLine("---------------------------------------------------------------------------------");
+                                // Reading values
+                                for (i = 0; i < columns.Length; i++)
+                                {
+                                    string value;
+                                    Console.Write((columns[i][0] == ' ' ? columns[i].Substring(1) : columns[i]) + " >> ");
+                                    value = Console.ReadLine();
+                                    if (value.Equals("$exit")) goto START;
+                                    values[i] = value;
+                                }
+
+                                // Writing into database
+                                string fields = "(";
+                                string data = "(";
+
+                                for (i = 0; i < columns.Length; i++)
+                                    fields += (i == 0 ? "" : ",") + columns[i];
+                                fields += ")";
+
+                                for (i = 0; i < values.Length; i++)
+                                {
+                                    bool isNum = isNumber(values[i]);
+                                    data += (i == 0 ? "" : ",") + (isNum ? "" : "'") + values[i] + (isNum ? "" : "'");
+                                }
+                                data += ")";
+
+                                dbManager.write(TABLE, fields, data);
+                            }
                         }
                         else error("Not enough arguments, if inside table minimum is 2");
                     } catch (Exception e)
@@ -200,7 +276,8 @@ ____________  ___  ___
                     goto START;
 
                 // Exit the program
-                case "exit": case "quit":
+                case "exit":
+                case "quit":
                     goto EXIT;
 
                 // Print specified data
@@ -223,6 +300,7 @@ ____________  ___  ___
                         }
                         goto START;
                     }
+                    else if (TABLE != null && command[1].Equals("*")) dbManager.printSelection(dbManager.readList(TABLE, command[1], command[2]));
                     else if (command.Count <= 2) error("Not enough arguments, you must specify database table and selector!");
                     else dbManager.printSelection(dbManager.readList(command[2], command[1]));
                     goto START;
