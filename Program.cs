@@ -5,7 +5,7 @@
         private static string? PATH;
         private static string? DATABASE;
         private static string? TABLE;
-        private static DBManager dbManager;
+        private static DBManager? dbManager;
 
         // Printing command help
         static void printHelp()
@@ -241,7 +241,7 @@ ____________  ___  ___
                                     string value;
                                     Console.Write((columns[i][0] == ' ' ? columns[i].Substring(1) : columns[i]) + " >> ");
                                     value = Console.ReadLine();
-                                    if (value.Equals("$exit")) goto START;
+                                    if (value == null || value.Equals("$exit")) goto START;
                                     values[i] = value;
                                 }
 
